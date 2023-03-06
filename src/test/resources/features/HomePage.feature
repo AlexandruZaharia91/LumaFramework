@@ -1,5 +1,6 @@
 Feature: Home Page content
 
+@Test
   Scenario: Check Home Page content
     Given I enter in Luma site
     And   I start to check the toolbar

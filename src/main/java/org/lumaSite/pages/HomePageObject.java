@@ -1,15 +1,22 @@
 package org.lumaSite.pages;
 
 import org.junit.Assert;
-import org.lumaSite.actions.Actions;
+import org.lumaSite.base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 
-public class HomePageObject extends Actions {
+public class HomePageObject extends BasePage {
+
 
     @FindBy(xpath = "//a[@id='ui-id-3']")
     private WebElement whatsNewOpt;
@@ -37,52 +44,54 @@ public class HomePageObject extends Actions {
     private WebElement saleText;
     @FindBy(xpath = "//input[@id = 'search']")
     private WebElement textBoxSearch;
-    @FindBys(@FindBy(xpath = "//div[@class = 'field search']//li "))
+    @FindBys(@FindBy(xpath = "//div[@class = 'field search']//li"))
     private List<WebElement> listElementsTextBox;
 
-
+    public HomePageObject(){
+        super();
+        PageFactory.initElements(driver, this);
+    }
 
     public void clickWhatsNew(){
-        clickElement(whatsNewOpt);
-        checkText(whatsNewText, "What's New");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/what-is-new.html");
+        click(whatsNewOpt);
     }
 
     public void clickWomen(){
-        clickElement(womenOpt);
-        checkText(womenText, "Women");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/women.html");
+        click(womenOpt);
     }
 
     public void clickMen(){
-        clickElement(menOpt);
-        checkText(menText, "Men");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/men.html");
+        click(menOpt);
     }
 
     public void clickGear(){
-        clickElement(gearOpt);
-        checkText(gearText, "Gear");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/gear.html");
+        click(gearOpt);
     }
 
     public void clickTraining(){
-        clickElement(trainingOpt);
-        checkText(trainingOpt, "Training");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/training.html");
+        click(trainingOpt);
     }
 
     public void clickSale(){
-        clickElement(saleOpt);
-        checkText(saleText, "Sale");
-        checkURL(getDriver().getCurrentUrl(), "https://magento.softwaretestingboard.com/sale.html");
+        click(saleOpt);
     }
 
-    public void searchText(String text){
-        clearContent(textBoxSearch);
-        enterText(textBoxSearch, text);
-        Assert.assertTrue("nu s-a gasit nici o lista", listElementsTextBox.size() > 0);
+    public void searchBox(String text){
+        clear(textBoxSearch);
+        click(textBoxSearch);
+        addText(text, textBoxSearch);
     }
+
+    public void getTitle(){
+        Assert.assertEquals(getUrl(), "https://magento.softwaretestingboard.com/what-is-new.html");
+    }
+
+    public void takeelementofList(String text){
+        searchBox(text);
+        listOfelements(listElementsTextBox);
+
+    }
+
 
 
 }
