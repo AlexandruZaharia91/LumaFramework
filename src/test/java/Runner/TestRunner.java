@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        tags = "@test",
+        tags = "@Run",
         plugin = {"json:target/cucumber-report/cucumber.json"},
-        features = "classpath:features",
+        features = "classpath:features.OrangeHRM",
         glue = {"StepsDefinition"}
 )
 

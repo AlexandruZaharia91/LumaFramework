@@ -44,11 +44,12 @@ public class HomePageObject extends BasePage {
     private WebElement saleText;
     @FindBy(xpath = "//input[@id = 'search']")
     private WebElement textBoxSearch;
-    @FindBys(@FindBy(xpath = "//div[@class = 'field search']//li"))
+    @FindBys(@FindBy(xpath = "//div[@id= 'search_autocomplete']"))
     private List<WebElement> listElementsTextBox;
+    @FindBy(xpath = "//div[@id= 'store.menu']")
+    private List<WebElement> listofToolbar;
 
     public HomePageObject(){
-        super();
         PageFactory.initElements(driver, this);
     }
 
@@ -77,8 +78,6 @@ public class HomePageObject extends BasePage {
     }
 
     public void searchBox(String text){
-        clear(textBoxSearch);
-        click(textBoxSearch);
         addText(text, textBoxSearch);
     }
 
@@ -86,10 +85,17 @@ public class HomePageObject extends BasePage {
         Assert.assertEquals(getUrl(), "https://magento.softwaretestingboard.com/what-is-new.html");
     }
 
-    public void takeelementofList(String text){
-        searchBox(text);
+    public void takeElementofList(String text){
         listOfelements(listElementsTextBox);
+    }
 
+    public void checkPageURL(){
+       // visit("https://magento.softwaretestingboard.com/");
+       Assert.assertEquals("https://magento.softwaretestingboard.com/", driver.getCurrentUrl());
+    }
+
+    public void takeElementsofToolbar(){
+        listOfelements(listofToolbar);
     }
 
 
