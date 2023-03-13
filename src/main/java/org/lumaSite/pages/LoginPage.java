@@ -8,10 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends BasePage {
 
-    public LoginPage(){
-        PageFactory.initElements(driver, this);
-    }
-
     @FindBy(xpath = "//input[@placeholder='Username']")
     private WebElement userName;
     @FindBy(xpath = "//input[@placeholder='Password']")
@@ -22,12 +18,12 @@ public class LoginPage extends BasePage {
     private WebElement dasboardText;
 
     public void username(String username){
-        clear(userName);
+        click(userName);
         addText(username, userName);
     }
 
     public void password(String password){
-        clear(this.password);
+        click(this.password);
         addText(password, this.password);
     }
 

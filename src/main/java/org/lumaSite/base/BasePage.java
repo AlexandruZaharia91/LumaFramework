@@ -4,9 +4,12 @@ package org.lumaSite.base;
 import org.apache.commons.io.FileUtils;
 import org.lumaSite.config.DriverFactory;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -17,47 +20,58 @@ public class BasePage {
 
     protected WebDriver driver;
     DriverFactory driverFactory = new DriverFactory();
+    Actions action;
 
     public BasePage() {
         this.driver = driverFactory.getDriver();
+        PageFactory.initElements(driver, this);
+        action = new Actions(driver);
     }
 
-    public WebElement find(WebElement locator) {
+    protected WebElement find(WebElement locator) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOf(locator));
         return locator;
     }
 
-    public void submit(WebElement locator) {
+    protected WebElement clickAble(WebElement locator){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        return locator;
+    }
+
+    protected void submit(WebElement locator) {
         find(locator).submit();
     }
 
-    public void addText(String inputText, WebElement locator) {
-        find(locator).sendKeys(inputText);
+    protected void addText(String inputText, WebElement locator) {
+        locator.sendKeys(inputText);
     }
 
-    public void clear(WebElement locator) {
-        find(locator).clear();
+    protected void clear(WebElement locator) {
+        click(locator);
+        locator.sendKeys(Keys.chord(Keys.COMMAND, "a"));
     }
 
-    public void click(WebElement locator) {
-        find(locator).click();
+    protected void click(WebElement locator) {
+        clickAble(locator).click();
+        //find(locator).click();
     }
 
-    public void listOfelements(List<WebElement> locators){
-        find(locators.get(0));
-        locators.get(0).click();
+    protected void movetoElement(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
 
-    public String getPageTitle() {
+    protected String getPageTitle() {
         return driver.getTitle();
     }
 
-    public String getUrl() {
+    protected String getUrl() {
         return driver.getCurrentUrl();
     }
 
-    public void visit(String url) {
+    protected void visit(String url) {
         driver.get(url);
     }
 
@@ -67,7 +81,7 @@ public class BasePage {
      * @param locator
      * @return String representing the inner HTML of the DOM element (MW: To check it is actually inner-text
      */
-    public String getText(WebElement locator) {
+    protected String getText(WebElement locator) {
         return find(locator).getText();
     }
 
@@ -77,7 +91,7 @@ public class BasePage {
      * @param searchString partial text to locate within the page url
      * @throws IllegalStateException
      */
-    public void valCorrectPage(String searchString) {
+    protected void valCorrectPage(String searchString) {
         if (!getPageTitle().contains(searchString)) {
             throw new IllegalStateException("This is not " + searchString + " .The actual Url is: " + getUrl());
         }
@@ -91,5 +105,20 @@ public class BasePage {
             throw new RuntimeException(ioe.getMessage(), ioe);
         }
         throw e;
+    }
+
+
+    protected WebElement listofElements(List<WebElement> list, String text){
+        WebElement elem = null;
+        for(int i = 0; i< list.size();i++) {
+            if (list.get(i).getText().equalsIgnoreCase(text)) {
+                elem = list.get(i);
+            }
+        }
+        return elem;
+    }
+
+    protected void uploadDoc(WebElement element, String path){
+        element.sendKeys(path);
     }
 }

@@ -8,11 +8,4 @@ Feature: My Info Page
 @Run
     Scenario: My Info
       Given I go to My Info
-      And I access Personal Details page
-      Then I check the new page
-      And I access Contact Details
-      Then I check the new page
-      And I access Job
-      Then I check the new page
-      And I access Salary
-      Then I check the new page
+      And I started to complete the fields
