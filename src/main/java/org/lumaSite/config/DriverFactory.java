@@ -2,6 +2,7 @@ package org.lumaSite.config;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class DriverFactory {
     static {
@@ -16,7 +17,9 @@ public class DriverFactory {
 
     public WebDriver getDriver(){
         if (driver == null){
-            driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--remote-allow-origins=*");
+            driver = new ChromeDriver(options);
             driver.manage().window().maximize();
             driver.manage().deleteAllCookies();
             return driver;
